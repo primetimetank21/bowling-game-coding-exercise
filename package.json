@@ -1,0 +1,15 @@
+{
+  "name": "bowlinggame",
+  "version": "1.0.0",
+  "description": "Program that calculates the total score for one game of American Ten-Pin Bowling",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Earl Tankard, Jr.",
+  "license": "ISC",
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  }
+}
