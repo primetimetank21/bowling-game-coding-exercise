@@ -36,15 +36,11 @@ function computeScore() {
     try {
         // Gets indexes of '-'
         while (i !== scorecard.length) {
-
             if (scorecard.charAt(i) === '-') {
                 slashIndexes.push(i);
-
             }
             i++;
         }
-
-        // console.log(`Slash length: ${slashIndexes.length}`);
 
         // Start computing score
         for (let j = 0; j < slashIndexes.length; j++) {
@@ -52,19 +48,15 @@ function computeScore() {
             var tmpThrows = 0;
             if (slashIndexes[j] === slashIndexes[slashIndexes.length - 1]) {        // Compute til end of string
                 for (let k = slashIndexes[j] + 1; k < scorecard.length; k++) {
-                    // console.log(scorecard.charAt(k))
+
                     // check for 'X', '/', or number
                     if (scorecard.charAt(k).toUpperCase() === 'X') {
+
                         //create scoreFrame with score of 10, throws of 2
-                        // frameArray.forEach(frame => {
-                        //     if (frame.extraThrows > 0) {
-                        //         frame.score += tmpSum;
-                        //         frame.extraThrows--;
-                        //     }
-                        // });
                         tmpSum = 10;
                         tmpThrows = 2;
                     } else if (scorecard.charAt(k) === '/') {
+
                         //create scoreFrame with score of 10, throws of 1
                         frameArray.forEach(frame => {
                             if (frame.extraThrows > 0) {
@@ -86,11 +78,7 @@ function computeScore() {
                             frame.extraThrows--;
                         }
                     });
-
                 }
-
-
-                // NEED to create special case for last frame
 
                 // Create scoreFrame object
                 let newFrame = frameMaker(tmpSum, tmpThrows);
@@ -105,21 +93,16 @@ function computeScore() {
                 });
             } else {        // Compute until the next index
                 for (let k = slashIndexes[j] + 1; k < slashIndexes[j + 1]; k++) {
-                    // console.log(scorecard.charAt(k))
 
                     //check for 'X', '/', or number
                     if (scorecard.charAt(k).toUpperCase() === 'X') {
+
                         //create frameObj with score of 10, throws of 2
                         tmpSum = 10;
                         tmpThrows = 2;
                     } else if (scorecard.charAt(k) === '/') {
+
                         //create frameObj with score of 10, throws of 1
-                        frameArray.forEach(frame => {
-                            if (frame.extraThrows > 0) {
-                                frame.score += tmpSum;
-                                frame.extraThrows--;
-                            }
-                        });
                         tmpSum = 10;
                         tmpThrows = 1;
                     } else {
@@ -127,16 +110,13 @@ function computeScore() {
                         tmpThrows = 0;
                     }
 
-                    // frameArray.forEach(frame => {
-                    //     if (frame.extraThrows > 0) {
-                    //         frame.score += tmpSum;
-                    //         frame.extraThrows--;
-                    //     }
-                    // });
-
+                    frameArray.forEach(frame => {
+                        if (frame.extraThrows > 0) {
+                            frame.score += tmpSum;
+                            frame.extraThrows--;
+                        }
+                    });
                 }
-
-
 
                 // Create scoreFrame object
                 let newFrame = frameMaker(tmpSum, tmpThrows);
@@ -149,9 +129,7 @@ function computeScore() {
                         frame.extraThrows--;
                     }
                 });
-
             }
-
         }
 
         // Checks last 2 frames' extra throws
@@ -166,20 +144,26 @@ function computeScore() {
             }
         }
 
-
-        // console.log(`frameArray: ${frameArray.length}`);
+        // Outputs all of the frames
         console.log(`frameArray: ${JSON.stringify(frameArray)}`);
+        console.log(`Number of frames: ${frameArray.length}`);
+
+
+        // Calculates the final score
         frameArray.forEach(frame => {
             finalScore += frame.score;
         })
+
+        // Returns the final score
         return finalScore;
 
     } catch (err) {
+
+        // Output any errors that might occur due to user input
         console.log(`Error: ${err}`);
         return -1;
     }
 }
 
 const bowlingScore = computeScore();
-
 console.log(`bowlingScore: ${bowlingScore}`);
