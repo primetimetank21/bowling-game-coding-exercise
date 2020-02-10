@@ -9,7 +9,7 @@ const prompt = require('prompt-sync')();
  * @param {*} throws 
  * @returns scoreFrame
  */
-function frameMaker(points=0, throws=0) {
+function frameMaker(points = 0, throws = 0) {
 
     let scoreFrame = {
         score: points,          // points for the frame
@@ -56,12 +56,25 @@ function computeScore() {
                     // check for 'X', '/', or number
                     if (scorecard.charAt(k).toUpperCase() === 'X') {
                         //create scoreFrame with score of 10, throws of 2
+                        // frameArray.forEach(frame => {
+                        //     if (frame.extraThrows > 0) {
+                        //         frame.score += tmpSum;
+                        //         frame.extraThrows--;
+                        //     }
+                        // });
                         tmpSum = 10;
                         tmpThrows = 2;
                     } else if (scorecard.charAt(k) === '/') {
                         //create scoreFrame with score of 10, throws of 1
+                        frameArray.forEach(frame => {
+                            if (frame.extraThrows > 0) {
+                                frame.score += tmpSum;
+                                frame.extraThrows--;
+                            }
+                        });
+
                         tmpSum = 10;
-                        tmpThrows = 1;
+                        tmpThrows = 0;
                     } else {
                         tmpSum += Number(scorecard.charAt(k));
                         tmpThrows = 0;
@@ -101,6 +114,12 @@ function computeScore() {
                         tmpThrows = 2;
                     } else if (scorecard.charAt(k) === '/') {
                         //create frameObj with score of 10, throws of 1
+                        frameArray.forEach(frame => {
+                            if (frame.extraThrows > 0) {
+                                frame.score += tmpSum;
+                                frame.extraThrows--;
+                            }
+                        });
                         tmpSum = 10;
                         tmpThrows = 1;
                     } else {
@@ -108,12 +127,12 @@ function computeScore() {
                         tmpThrows = 0;
                     }
 
-                    frameArray.forEach(frame => {
-                        if (frame.extraThrows > 0) {
-                            frame.score += tmpSum;
-                            frame.extraThrows--;
-                        }
-                    });
+                    // frameArray.forEach(frame => {
+                    //     if (frame.extraThrows > 0) {
+                    //         frame.score += tmpSum;
+                    //         frame.extraThrows--;
+                    //     }
+                    // });
 
                 }
 
@@ -125,7 +144,7 @@ function computeScore() {
 
                 // Checks for throws && increments previous frame scores if > 0
                 frameArray.forEach(frame => {
-                    if (frame.extraThrows > 0) {
+                    if (frame !== frameArray[j] && frame.extraThrows > 0) {
                         frame.score += tmpSum;
                         frame.extraThrows--;
                     }
@@ -135,11 +154,15 @@ function computeScore() {
 
         }
 
-        // Checks for last frame
-        if (frameArray[frameArray.length - 1].extraThrows > 0) {
+        // Checks last 2 frames' extra throws
+        if (frameArray[frameArray.length - 1].extraThrows > 0 || frameArray[frameArray.length - 2].extraThrows > 0) {
             while (frameArray[frameArray.length - 1].extraThrows !== 0) {
                 frameArray[frameArray.length - 1].score += tmpSum;
                 frameArray[frameArray.length - 1].extraThrows--;
+            }
+            while (frameArray[frameArray.length - 2].extraThrows !== 0) {
+                frameArray[frameArray.length - 2].score += tmpSum;
+                frameArray[frameArray.length - 2].extraThrows--;
             }
         }
 
